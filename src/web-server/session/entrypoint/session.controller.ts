@@ -4,21 +4,30 @@ import { BaseClass } from "../../../model/base-class";
 
 export class SessionController extends BaseClass {
     private createSessionUsecase = new CreateSessionUsecase();
+    private routerManager = Router();
+
     constructor() {
         super();
     }
 
     get route() {
-        return Router().post("/", (req: Request, res: Response) => {
+        this.createSession()
+        return this.routerManager
+    }
+
+    private createSession() {
+        this.routerManager.post("/", (req: Request, res: Response) => {
             this.log.info(`Request body -> ${JSON.stringify(req.body)}`);
 
             try {
-            
-                res.status(200).send(this.createSessionUsecase.execute(req.body));
-                
-            } catch (error) {
-                res.status(400).send(error)
+                const response = this.createSessionUsecase.execute(req.body);
+                this.log.info(`Response ${JSON.stringify(response)}`);
+                res.status(200).send(response);
             }
-        })
+            catch (error) {
+                this.log.error(`Erro in request => ${error}`);
+                res.status(400).send(error);
+            }
+        });
     }
 }

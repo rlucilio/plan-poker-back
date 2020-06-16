@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import { BaseClass } from "../model/base-class";
 import { SessionController } from "./session/entrypoint/session.controller";
 
-export class WebServer extends BaseClass {
+class WebServer extends BaseClass {
     private _serve: Express = express();
     private sessionController = new SessionController();
 
@@ -33,3 +33,5 @@ export class WebServer extends BaseClass {
         this.createRoutes();
     }
 }
+
+export default new WebServer();

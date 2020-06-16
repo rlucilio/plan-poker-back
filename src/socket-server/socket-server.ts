@@ -1,27 +1,30 @@
 import http from "http";
 import socketIO from "socket.io"
-import { WebServer } from "../web-server/web-server";
 import { BaseClass } from "../model/base-class";
+import { ConnectSessionUsecase } from "./session/usecase/connect-session.usecase";
+import webServer from "../web-server/web-server";
 
-export class SocketServer extends BaseClass{
+class SocketServer extends BaseClass{
     private serve?: http.Server;
-    private socketServe?: socketIO.Server;
+    socket?: socketIO.Server;
 
-    constructor(private webServer: WebServer) {
+    constructor() {
         super();
     }
 
     private createServe() {
-        this.serve = http.createServer(this.webServer.serve);
-        this.socketServe = socketIO(this.serve);
+        this.serve = http.createServer(webServer.serve);
+        this.socket = socketIO(this.serve);
 
-        this.socketServe.on("connection", newSocket => {
+        this.socket.on("connection", newSocket => {
 
             if (!newSocket.handshake.query.session || !newSocket.handshake.query.user)
                 newSocket.disconnect();
 
-            this.log.info(`New Socket connection -> ${newSocket.id}`)
-            this.log.info(`User -> ${newSocket.handshake.query.user}`)
+            this.log.info(`New Socket connection -> ${newSocket.id}`);
+            this.log.info(`User -> ${newSocket.handshake.query.user}`);
+
+            this.addEventsSockets(newSocket)
         })
     }
 
@@ -30,8 +33,23 @@ export class SocketServer extends BaseClass{
         this.log.info(`Server running -> http://localhost:${process.env.port}`)
     }
 
+    private addEventsSockets(newSocket: socketIO.Socket) {
+
+        try {
+            new ConnectSessionUsecase().execute(newSocket)
+            
+        } catch (error) {
+            newSocket.disconnect();
+            this.log.error(`Error in add event -> ${error}`)
+        }
+
+
+    }
+
     initSocketServer() {
         this.createServe();
         this.listenServe();
     }
 }
+
+export default new SocketServer();
