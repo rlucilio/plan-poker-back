@@ -1,5 +1,6 @@
-import express, { Express, Router } from "express";
+import express, { Express } from "express";
 import morgan from "morgan";
+import cors from "cors";
 import bodyParser from "body-parser";
 import { BaseClass } from "../model/base-class";
 import { SessionController } from "./session/entrypoint/session.controller";
@@ -17,6 +18,7 @@ class WebServer extends BaseClass {
         this.serve.use(morgan("dev"));
         this.serve.use(bodyParser.urlencoded({ extended: false }))
         this.serve.use(bodyParser.json())
+        this.serve.use(cors())
     }
 
     private createRoutes() {

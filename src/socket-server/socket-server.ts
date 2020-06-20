@@ -40,7 +40,7 @@ class SocketServer extends BaseClass{
             
         } catch (error) {
             newSocket.disconnect();
-            this.log.error(`Error in add event -> ${error}`)
+            this.log.error(`Error in add event -> ${JSON.stringify(error)}`)
         }
 
 

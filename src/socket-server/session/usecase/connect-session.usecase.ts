@@ -18,7 +18,6 @@ export class ConnectSessionUsecase {
         }
 
         const session = this.cache.get<ISaveSessionEntity>(model.session)
-
         if (!session)
             throw new ErrorBase("Session invalid", ErrorTypes.Params, {model, session});
             

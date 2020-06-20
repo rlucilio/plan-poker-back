@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { CreateSessionUsecase } from "../usecase/create-session.usecase";
 import { BaseClass } from "../../../model/base-class";
+import cacheManager from "../../../cache/cache-manager";
 
 export class SessionController extends BaseClass {
     private createSessionUsecase = new CreateSessionUsecase();
@@ -25,7 +26,7 @@ export class SessionController extends BaseClass {
                 res.status(200).send(response);
             }
             catch (error) {
-                this.log.error(`Erro in request => ${error}`);
+                this.log.error(`Erro in request -> ${JSON.stringify(error)}`)
                 res.status(400).send(error);
             }
         });

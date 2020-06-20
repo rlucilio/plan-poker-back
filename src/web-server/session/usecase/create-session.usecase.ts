@@ -11,12 +11,12 @@ export class CreateSessionUsecase {
     constructor() { }
 
     execute(model: ICreateSessionModel) {
-        if (!model || !model.name)
+        if (!model || !model.name || !model.owner)
             throw new ErrorBase("Request body invalid", ErrorTypes.Params, model);  
 
         const newSession: ISaveSessionEntity = {
             session: {
-                name: `session_${model.name}`,
+                name: model.name.replace(/ /g, "_"),
                 ownerName: model.owner
             },
             users: [
@@ -24,9 +24,11 @@ export class CreateSessionUsecase {
             ]
         }
 
-        newSession.session.expireInSeconds = 1800;
+        if (this.myCache.get(newSession.session.name))
+            throw new ErrorBase("There is already a room with that name", ErrorTypes.Role, model);  
+
+        newSession.session.expireInSeconds = +(process.env.expire_room || 1800);
         this.myCache.set(newSession.session.name, newSession);
-        
         return newSession.session
     }
 }

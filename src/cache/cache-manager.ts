@@ -4,7 +4,7 @@ class CacheManager {
     constructor() {}
 
     private cache = new NodeCache({
-        stdTTL: 1800,
+        stdTTL: +(process.env.expire_room || 1800),
         deleteOnExpire: true
     });
 
