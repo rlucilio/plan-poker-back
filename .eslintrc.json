@@ -15,5 +15,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-unused-vars": "off",
+        "semi": [2, "always"]
     }
 }

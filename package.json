@@ -5,7 +5,8 @@
   "main": "src/app.ts",
   "scripts": {
     "build": "npx babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
-    "start": "nodemon"
+    "start": "node dist/app.js",
+    "dev": "ts-node-dev --respawn --transpileOnly --ignore-watch node_modules --no-notify src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -38,6 +39,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "nodemon": "^2.0.4",
+    "ts-node-dev": "^1.0.0-pre.49",
     "typescript": "^3.9.5"
   }
 }
