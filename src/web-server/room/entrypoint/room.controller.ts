@@ -1,25 +1,25 @@
 import { Router } from 'express';
-import { CreateSessionUsecase } from '../usecase/create-session.usecase';
+import { CreateRoomUsecase } from '../usecase/create-room.usecase';
 import { BaseClass } from '../../../model/base-class';
-import { FindSessionUsecase } from '../usecase/find-session.usecase';
+import { FindRoomUsecase } from '../usecase/find-room.usecase';
 
 export class RoomController extends BaseClass {
-  private createSessionUsecase = new CreateSessionUsecase();
-  private findSessionUsecase = new FindSessionUsecase();
+  private createRoomUsecase = new CreateRoomUsecase();
+  private findRoomUsecase = new FindRoomUsecase();
   private routerManager = Router();
 
   get route () {
-    this.createSession();
-    this.verifyExistSession();
+    this.createRoom();
+    this.verifyExistRoom();
     return this.routerManager;
   }
 
-  private createSession () {
+  private createRoom () {
     this.routerManager.post('/', (req, res) => {
       this.log.info(`Request body -> ${JSON.stringify(req.body)}`);
 
       try {
-        const response = this.createSessionUsecase.execute(req.body);
+        const response = this.createRoomUsecase.execute(req.body);
         this.log.info(`Response ${JSON.stringify(response)}`);
         res.status(200).json(response);
       } catch (error) {
@@ -29,12 +29,12 @@ export class RoomController extends BaseClass {
     });
   }
 
-  private verifyExistSession () {
+  private verifyExistRoom () {
     this.routerManager.get('/find/:name', (request, response) => {
       this.log.info(`Request body -> ${request.params.name}`);
 
       try {
-        const res = this.findSessionUsecase.execute(request.params.name);
+        const res = this.findRoomUsecase.execute(request.params.name);
         this.log.info(`Response ${JSON.stringify(res)}`);
         response.status(200).json(res);
       } catch (error) {

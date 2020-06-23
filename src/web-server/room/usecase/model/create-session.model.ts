@@ -1,17 +1,26 @@
-import { TypesRoom } from './types-room';
-import { ITaskRoom } from './task-room.model';
+import { TypesRoom } from '../../../../model/enums/types-room';
 
-export interface ICreateSessionModel {
-    owner: string;
-    name: string;
-    tasks: ITaskRoom[];
-    settingsRoom: {
+export namespace CreateRoomModel {
+    export interface room {
+        owner: string;
+        name: string;
+        tasks: Task[]
+        settingsRoom: Settings;
+    }
+
+    export interface Task {
+        title: string;
+        description: string;
+        resultVoting: number;
+    }
+
+    export interface Settings {
         timeoutFlipCards: number;
         enableFlipCardsTimeout: boolean;
         enableObserver: boolean;
         typeRoom: TypesRoom;
         description: string;
-        flipCardsAfterReveal: boolean;
+        changeVoteAfterReveal: boolean;
         keepHistory: boolean;
         autoFlipCards: boolean;
     }

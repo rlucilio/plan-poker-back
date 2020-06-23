@@ -1,24 +1,24 @@
 import { Socket } from 'socket.io';
 import { ErrorBase } from '../../../error/error-base';
 import { ErrorTypes } from '../../../error/error-types';
-import { ISaveSessionEntity } from '../../../web-server/room/usecase/model/save-session.entity';
 import cacheManager from '../../../cache/cache-manager';
-import { VerifyConnectionSession } from './verify-connection-session.usecase';
-import { IConnectSessionModel } from './model/connect-session.model';
+import { VerifyConnectionRoom } from './verify-connection-room.usecase';
+import { IConnectRoomModel } from './model/connect-room.model';
+import { IRoom } from '../../../model/interfaces/room';
 
 export class ConnectRoomUsecase {
   private cache = cacheManager;
 
   execute (socket: Socket) {
-    const model: IConnectSessionModel = {
-      session: socket.handshake.query.session,
+    const model: IConnectRoomModel = {
+      room: socket.handshake.query.room,
       user: socket.handshake.query.user
     };
 
-    const session = this.cache.get<ISaveSessionEntity>(model.session);
-    if (!session) { throw new ErrorBase('Session invalid', ErrorTypes.Params, { model, session }); }
+    const room = this.cache.get<IRoom>(model.room);
+    if (!room) { throw new ErrorBase('Room invalid', ErrorTypes.Params, { model, room }); }
 
-    socket.join(session?.session.name);
-    new VerifyConnectionSession().execute(session, model);
+    socket.join(room?.room.name);
+    new VerifyConnectionRoom().execute(room, model);
   }
 }
