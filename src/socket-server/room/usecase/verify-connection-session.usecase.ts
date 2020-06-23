@@ -1,5 +1,5 @@
 import { IConnectSessionModel } from './model/connect-session.model';
-import { ISaveSessionEntity } from '../../../web-server/session/usecase/model/save-session.entity';
+import { ISaveSessionEntity } from '../../../web-server/room/usecase/model/save-session.entity';
 import socketServer from '../../socket-server';
 import cacheManager from '../../../cache/cache-manager';
 import { EventsSocket } from '../../events-socket';

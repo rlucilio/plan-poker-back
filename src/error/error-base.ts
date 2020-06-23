@@ -1,11 +1,11 @@
-import { ErrorTypes } from "./error-types";
+import { ErrorTypes } from './error-types';
 
 export class ErrorBase extends Error {
-    constructor(
+  constructor (
         private msg: string,
         private type: ErrorTypes,
         private value: any
-    ) {
-        super();
-    }
+  ) {
+    super();
+  }
 }

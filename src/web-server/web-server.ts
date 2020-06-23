@@ -1,39 +1,35 @@
-import express, { Express } from "express";
-import morgan from "morgan";
-import cors from "cors";
-import bodyParser from "body-parser";
-import { BaseClass } from "../model/base-class";
-import { SessionController } from "./session/entrypoint/session.controller";
+import express, { Express } from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { BaseClass } from '../model/base-class';
+import { RoomController } from './room/entrypoint/room.controller';
 
 class WebServer extends BaseClass {
-    private _serve: Express = express();
-    private sessionController = new SessionController();
+  private _serve: Express = express();
+  private roomController = new RoomController();
 
-    constructor() {
-        super();
-    }
+  private createMiddlewares () {
+    this.log.info('Init middlewares');
+    this.serve.use(morgan('dev'));
+    this.serve.use(bodyParser.urlencoded({ extended: false }));
+    this.serve.use(bodyParser.json());
+    this.serve.use(cors());
+  }
 
-    private createMiddlewares() {
-        this.log.info("Init middlewares");
-        this.serve.use(morgan("dev"));
-        this.serve.use(bodyParser.urlencoded({ extended: false }))
-        this.serve.use(bodyParser.json())
-        this.serve.use(cors())
-    }
+  private createRoutes () {
+    this.log.info('Init routes');
+    this.serve.use('/room', this.roomController.route);
+  }
 
-    private createRoutes() {
-        this.log.info(`Init routes`);
-        this.serve.use("/session", this.sessionController.route)
-    }
+  get serve (): Express {
+    return this._serve;
+  }
 
-    get serve(): Express {
-        return this._serve;
-    }
-
-    initWebServer() {
-        this.createMiddlewares();
-        this.createRoutes();
-    }
+  initWebServer () {
+    this.createMiddlewares();
+    this.createRoutes();
+  }
 }
 
 export default new WebServer();
