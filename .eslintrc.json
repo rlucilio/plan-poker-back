@@ -16,6 +16,8 @@
     ],
     "rules": {
         "no-unused-vars": "off",
-        "semi": [2, "always"]
+        "semi": [2, "always"],
+        "no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-expressions": 2
     }
 }
