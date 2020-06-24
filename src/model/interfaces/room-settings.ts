@@ -4,8 +4,8 @@ export interface IRoomSettings {
     timeoutFlipCards: number;
     enableFlipCardsTimeout: boolean;
     enableObserver: boolean;
-    typeRoom: TypesRoom;
-    changeVoteAfterReveal: boolean;
     keepHistory: boolean;
+    changeVoteAfterReveal: boolean;
     autoFlipCards: boolean;
+    typeRoom: TypesRoom;
 }

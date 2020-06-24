@@ -1,13 +1,13 @@
 import { BaseClass } from '../../../model/base-class';
-import { ObserverStorageGateway } from '../gateway/observer-storage.gateway';
 import { IConnectRoomResult } from './model/connect-room-result.model';
 import { EventsEmmiterSocket } from '../../events-emmiter';
+import { RoomGateway } from '../../../gateway/room.gateway';
 
 export class ConnectRoomObserver extends BaseClass {
-  private observerGateway = new ObserverStorageGateway();
+  private roomGateway = new RoomGateway();
   execute (roomName: string, socketId: string): IConnectRoomResult {
     this.log.info('Execute');
-    this.observerGateway.saveObserser(roomName, {
+    this.roomGateway.addObserserInRoom(roomName, {
       idSocket: socketId
     });
 

@@ -1,21 +1,21 @@
 import { IConnectRoomModel } from './model/connect-room.model';
 import { BaseClass } from '../../../model/base-class';
 import { EventsEmmiterSocket } from '../../events-emmiter';
-import { UserStorageGateway } from '../gateway/user-storage.gateway';
 import { IUser } from '../../../model/interfaces/user';
 import { IConnectRoomResult } from './model/connect-room-result.model';
+import { RoomGateway } from '../../../gateway/room.gateway';
 
 export class ConnectUserRoomUsecase extends BaseClass {
-    private userGateway = new UserStorageGateway();
+    private roomGateway = new RoomGateway();
 
     execute (model: IConnectRoomModel, socketId: string): IConnectRoomResult {
       this.log.info('Execute');
-      const userExist = this.userGateway.findUserInRoomByName(model.room, model.user);
+      const userExist = this.roomGateway.findUserInRoomByName(model.room, model.user);
 
       if (userExist) {
         this.log.info(`Send event ${EventsEmmiterSocket.joinRoom}`);
         userExist.idSocket = socketId;
-        this.userGateway.updateUserInRoom(model.room, userExist, model.user);
+        this.roomGateway.updateUserInRoom(model.room, userExist, model.user);
 
         return {
           event: EventsEmmiterSocket.joinRoom,
@@ -32,7 +32,7 @@ export class ConnectUserRoomUsecase extends BaseClass {
           owner: false
         };
 
-        this.userGateway.saveUserInRoom(model.room, newUser);
+        this.roomGateway.addUserInRoom(model.room, newUser);
 
         return {
           event: EventsEmmiterSocket.joinRoom,

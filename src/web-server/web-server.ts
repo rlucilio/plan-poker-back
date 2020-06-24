@@ -3,7 +3,6 @@ import morgan from 'morgan';
 import cors from 'cors';
 import { urlencoded, json } from 'body-parser';
 import { BaseClass } from '../model/base-class';
-import { RoomController } from './room/entrypoint/room.controller';
 import { RouterManager } from './router-manager';
 
 class WebServer extends BaseClass {
