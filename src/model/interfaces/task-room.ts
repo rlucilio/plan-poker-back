@@ -4,7 +4,7 @@ import { IRoom } from './room';
 export interface ITaskRoom {
     title: string;
     description: string;
-    resultVoting: number;
+    resultVoting?: number;
     votes: IVote[];
-    room: IRoom;
+    room?: IRoom;
 }

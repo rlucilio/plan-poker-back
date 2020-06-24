@@ -1,25 +1,25 @@
 import express, { Express } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import bodyParser from 'body-parser';
+import { urlencoded, json } from 'body-parser';
 import { BaseClass } from '../model/base-class';
 import { RoomController } from './room/entrypoint/room.controller';
+import { RouterManager } from './router-manager';
 
 class WebServer extends BaseClass {
   private _serve: Express = express();
-  private roomController = new RoomController();
+  private routers = new RouterManager();
 
   private createMiddlewares () {
     this.log.info('Init middlewares');
     this.serve.use(morgan('dev'));
-    this.serve.use(bodyParser.urlencoded({ extended: false }));
-    this.serve.use(bodyParser.json());
+    this.serve.use(urlencoded({ extended: false }));
+    this.serve.use(json());
     this.serve.use(cors());
   }
 
   private createRoutes () {
     this.log.info('Init routes');
-    this.serve.use('/room', this.roomController.route);
   }
 
   get serve (): Express {
@@ -29,6 +29,7 @@ class WebServer extends BaseClass {
   initWebServer () {
     this.createMiddlewares();
     this.createRoutes();
+    this.routers.registerRouters();
   }
 }
 

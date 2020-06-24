@@ -1,7 +1,7 @@
-export enum EventsSocket {
+export enum EventsEmmiterSocket {
     joinRoom = 'join_room',
     returnRoom = 'return_room',
-    requestNewCreateTask = 'request_create_task',
     timeoutFlipCards = 'timeout_flip_cards',
-    newTask = 'new_task'
+    newTask = 'new_task',
+    newObserver = 'new_observer'
 }

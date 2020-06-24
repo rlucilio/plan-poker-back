@@ -6,6 +6,7 @@ export namespace CreateRoomModel {
         name: string;
         tasks: Task[]
         settingsRoom: Settings;
+        description: string;
     }
 
     export interface Task {
@@ -19,7 +20,6 @@ export namespace CreateRoomModel {
         enableFlipCardsTimeout: boolean;
         enableObserver: boolean;
         typeRoom: TypesRoom;
-        description: string;
         changeVoteAfterReveal: boolean;
         keepHistory: boolean;
         autoFlipCards: boolean;

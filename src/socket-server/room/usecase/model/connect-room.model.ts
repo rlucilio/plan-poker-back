@@ -1,4 +1,4 @@
 export interface IConnectRoomModel {
     room: string,
-    user: string
+    user: string,
 }

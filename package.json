@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "start": "node dist/app.js",
-    "dev": "ts-node-dev --respawn --transpileOnly --ignore-watch node_modules --no-notify src/app.ts"
+    "dev": "ts-node-dev --respawn --ignore-watch node_modules --no-notify src/app.ts"
   },
   "keywords": [],
   "author": "",

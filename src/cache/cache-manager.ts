@@ -6,8 +6,8 @@ class CacheManager {
       deleteOnExpire: true
     });
 
-    get<T> (key: Key): T | any {
-      return this.cache.get(key);
+    get<T> (key: Key): T {
+      return this.cache.get(key) as T;
     }
 
     set (key: Key, value: unknown) {

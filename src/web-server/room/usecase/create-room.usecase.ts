@@ -17,10 +17,15 @@ export class CreateRoomUsecase {
       name: createSessionModel.name,
       users: [
         {
+          idSocket: '',
+          votes: [],
           name: createSessionModel.owner,
           owner: true
         }
-      ]
+      ],
+      description: createSessionModel.description,
+      tasks: [],
+      observers: []
     };
     this.setSettingsRoom(newRoom, createSessionModel.settingsRoom);
     this.myCache.set(createSessionModel.name, newRoom);
@@ -31,7 +36,6 @@ export class CreateRoomUsecase {
     if (!settings) {
       room.settingsRoom = {
         autoFlipCards: false,
-        description: room.name,
         enableFlipCardsTimeout: false,
         enableObserver: true,
         changeVoteAfterReveal: false,
@@ -45,7 +49,6 @@ export class CreateRoomUsecase {
 
     room.settingsRoom = {
       autoFlipCards: settings.autoFlipCards,
-      description: settings.description,
       enableFlipCardsTimeout: settings.enableFlipCardsTimeout,
       enableObserver: settings.enableObserver,
       changeVoteAfterReveal: settings.changeVoteAfterReveal,
