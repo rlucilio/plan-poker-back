@@ -16,9 +16,7 @@ export class TaskListener extends BaseClass {
         this.log.info(`Room -> ${createNewTaskModel.roomName}`);
 
         new CreateNewTaskUsecase().execute(createNewTaskModel).subscribe((result: ICreateNewTaskResult) => {
-          socket.to(createNewTaskModel.roomName).emit(result?.event, {
-            title: result.task
-          });
+          socket.to(createNewTaskModel.roomName).emit(result?.event, result.task);
         },
         error => socket.emit(EventsEmmiterSocket.error, error));
       });

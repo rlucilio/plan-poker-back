@@ -1,6 +1,6 @@
 export interface IVoteResult {
     event: string;
-    user: {
+    user?: {
         name: string;
         socketId: string;
     };

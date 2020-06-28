@@ -8,10 +8,12 @@ import { EventsEmmiterSocket } from '../../events-emmiter';
 import { ITaskRoom } from '../../../model/interfaces/task-room';
 import { IUser } from '../../../model/interfaces/user';
 import { IRoom } from '../../../model/interfaces/room';
+import { VerifyIfAllUserVotesUsecase } from './verify-if-all-user-votes.usecase';
 
 export class VoteUsecase {
   private roomGateway = new RoomGateway();
   private resultObservable = new ReplaySubject<IVoteResult>(3);
+  private verifyIfAllUserVotes = new VerifyIfAllUserVotesUsecase();
 
   execute (voteModel: IVoteModel): Observable<IVoteResult> {
     const room = this.roomGateway.findRoomByName(voteModel.roomName);
@@ -51,6 +53,13 @@ export class VoteUsecase {
       }
     });
     this.roomGateway.saveRoomBy(room);
+
+    if (this.verifyIfAllUserVotes.execute(room.name, task.id)) {
+      this.resultObservable.next({
+        event: EventsEmmiterSocket.allUserVote
+      });
+    }
+
     this.resultObservable.complete();
   }
 }
