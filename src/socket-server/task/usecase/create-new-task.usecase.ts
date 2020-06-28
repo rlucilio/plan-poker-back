@@ -1,60 +1,52 @@
+import { ReplaySubject } from 'rxjs';
+import { RoomGateway } from '../../../gateway/room.gateway';
+import { BaseClass } from '../../../model/base-class';
+import { IRoom } from '../../../model/interfaces/room';
+import { ITaskRoom } from '../../../model/interfaces/task-room';
 import { EventsEmmiterSocket } from '../../events-emmiter';
 import { ICreateNewTaskModel } from './model/create-new-task.model';
-import cacheManager from '../../../cache/cache-manager';
-import { IRoom } from '../../../model/interfaces/room';
-import { BaseClass } from '../../../model/base-class';
 import { ICreateNewTaskResult } from './model/create-new-task.result';
-import { Observable, ReplaySubject } from 'rxjs';
-import { TaskGateway } from '../gateway/task.gateway';
-import { ITaskRoom } from '../../../model/interfaces/task-room';
+import { FlipTimeoutUsecase } from './flip-timeout.usecase';
 
 export class CreateNewTaskUsecase extends BaseClass {
   private subjectCreateNewTask = new ReplaySubject<ICreateNewTaskResult>(1);
-  private taskGateway = new TaskGateway();
+  private flipTimeoutUsecase = new FlipTimeoutUsecase();
+  private roomGateway = new RoomGateway();
 
   execute (createNewTaskModel: ICreateNewTaskModel) {
     this.log.info(`Execute -> ${createNewTaskModel.socketId}`);
-    const room: IRoom = cacheManager.get<IRoom>(createNewTaskModel.roomName);
+    const room: IRoom = this.roomGateway.findRoomByName(createNewTaskModel.roomName);
 
     const newTask: ITaskRoom = {
-      description: '',
-      title: '',
+      id: room.tasks.length + createNewTaskModel.taskName,
+      description: createNewTaskModel.description,
+      title: createNewTaskModel.taskName,
       votes: []
     };
 
-    this.taskGateway.saveTask(newTask, createNewTaskModel.roomName);
+    this.roomGateway.AddTask(newTask, createNewTaskModel.roomName);
 
     if (room.settingsRoom?.enableFlipCardsTimeout) {
-      setTimeout(() => {
-        this.log.info(`Execute flip timeout-> ${createNewTaskModel.socketId}`);
-        this.subjectCreateNewTask.next({
-          event: EventsEmmiterSocket.timeoutFlipCards,
-          task: {
-            title: createNewTaskModel.taskName,
-            description: createNewTaskModel.description
-          }
-        });
-        this.subjectCreateNewTask.complete();
-      }, room.settingsRoom.timeoutFlipCards);
-
-      this.subjectCreateNewTask.next({
-        event: EventsEmmiterSocket.newTask,
-        task: {
-          title: createNewTaskModel.taskName,
-          description: createNewTaskModel.description
-        }
-      });
+      this.flipTimeoutUsecase.execute({ roomName: createNewTaskModel.roomName, taskId: newTask.id }).subscribe(
+        result => this.notifyEventTask(EventsEmmiterSocket.timeoutFlipCards, result.taskId, newTask.description, newTask.title, result.resultVotting),
+        error => this.subjectCreateNewTask.error(error),
+        () => this.subjectCreateNewTask.complete());
     } else {
-      this.subjectCreateNewTask.next({
-        event: EventsEmmiterSocket.newTask,
-        task: {
-          title: createNewTaskModel.taskName,
-          description: createNewTaskModel.description
-        }
-      });
-      this.subjectCreateNewTask.complete();
+      this.notifyEventTask(EventsEmmiterSocket.newTask, newTask.id, newTask.description, newTask.title);
     }
 
     return this.subjectCreateNewTask;
+  }
+
+  private notifyEventTask (event: string, taskId: string, description: string, taskName: string, valueVotting: number | undefined = undefined) {
+    this.subjectCreateNewTask.next({
+      event: event,
+      task: {
+        id: taskId,
+        value: valueVotting,
+        description: description,
+        title: taskName
+      }
+    });
   }
 }

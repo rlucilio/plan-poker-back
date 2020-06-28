@@ -6,7 +6,7 @@ import { IObserver } from './observer';
 export interface IRoom {
     name: string;
     description: string;
-    tasks?: ITaskRoom[];
+    tasks: ITaskRoom[];
     users: IUser[];
     observers: IObserver[];
     settingsRoom?: IRoomSettings;

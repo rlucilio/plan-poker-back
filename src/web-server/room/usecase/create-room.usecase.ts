@@ -1,17 +1,16 @@
 import { ErrorBase } from '../../../error/error-base';
 import { ErrorTypes } from '../../../error/error-types';
-import cacheManager from '../../../cache/cache-manager';
 import { IRoom } from '../../../model/interfaces/room';
 import { CreateRoomModel } from './model/create-session.model';
 import { TypesRoom } from '../../../model/enums/types-room';
+import { RoomGateway } from '../../../gateway/room.gateway';
 
 export class CreateRoomUsecase {
-  private myCache = cacheManager;
-
+  roomGateway = new RoomGateway();
   execute (createSessionModel: CreateRoomModel.room) {
     if (!createSessionModel || !createSessionModel.name || !createSessionModel.owner) { throw new ErrorBase('Request body invalid', ErrorTypes.Params, createSessionModel); }
 
-    if (this.myCache.get(createSessionModel.name)) { throw new ErrorBase('There is already a room with that name', ErrorTypes.Role, createSessionModel); }
+    if (this.roomGateway.findRoomByName(createSessionModel.name)) { throw new ErrorBase('There is already a room with that name', ErrorTypes.Role, createSessionModel); }
 
     const newRoom: IRoom = {
       name: createSessionModel.name,
@@ -28,7 +27,7 @@ export class CreateRoomUsecase {
       observers: []
     };
     this.setSettingsRoom(newRoom, createSessionModel.settingsRoom);
-    this.myCache.set(createSessionModel.name, newRoom);
+    this.roomGateway.saveRoomBy(newRoom);
     return createSessionModel;
   }
 

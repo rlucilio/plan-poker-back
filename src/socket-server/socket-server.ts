@@ -32,7 +32,7 @@ class SocketServer extends BaseClass {
           resolve(socket);
         } catch (error) {
           socket.disconnect();
-          this.log.error('Error');
+          this.log.error('Error in socket');
           this.log.error(JSON.stringify(error));
           reject(error);
         }

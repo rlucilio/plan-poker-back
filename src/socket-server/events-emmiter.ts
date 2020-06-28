@@ -3,5 +3,8 @@ export enum EventsEmmiterSocket {
     returnRoom = 'return_room',
     timeoutFlipCards = 'timeout_flip_cards',
     newTask = 'new_task',
-    newObserver = 'new_observer'
+    newObserver = 'new_observer',
+    newVote = 'new_vote',
+    allVotes = 'all_votes',
+    error = 'error'
 }

@@ -1,3 +1,4 @@
 export enum RoutersWebServer {
-    room = '/room'
+    room = '/room',
+    task = '/task'
 }

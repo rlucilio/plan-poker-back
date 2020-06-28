@@ -46,4 +46,24 @@ export class RoomGateway {
     room.tasks?.push(newTask);
     this.saveRoomBy(room);
   }
+
+  getAllTasks (nameRoom: string): ITaskRoom[] {
+    const room = this.findRoomByName(nameRoom);
+
+    return room.tasks || [];
+  }
+
+  updateTask (nameRoom: string, newTask: ITaskRoom) {
+    const room = this.findRoomByName(nameRoom);
+
+    let oldTask = room.tasks.find(task => task.id === newTask.id);
+    oldTask = newTask;
+    this.saveRoomBy(room);
+  }
+
+  findTaskById (nameRoom: string, taskId: string): ITaskRoom | undefined {
+    const room = this.findRoomByName(nameRoom);
+
+    return room.tasks.find(task => task.id === taskId);
+  }
 }

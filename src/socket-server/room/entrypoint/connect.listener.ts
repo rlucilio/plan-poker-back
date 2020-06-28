@@ -9,19 +9,25 @@ export class ConnectListner extends BaseClass {
       this.log.info(`New Socket connection -> ${socket.id}`);
       this.log.info(`User -> ${socket.handshake.query.user}`);
 
-      const connectRoomResult = new ConnectRoomUsecase().execute({
-        room: socket.handshake.query.room,
-        user: socket.handshake.query.user
-      }, socket.id);
+      try {
+        const connectRoomResult = new ConnectRoomUsecase().execute({
+          room: socket.handshake.query.room,
+          user: socket.handshake.query.user
+        }, socket.id);
 
-      socket.join(socket.handshake.query.room);
+        socket.join(socket.handshake.query.room);
 
-      socket
-        .in(socket.handshake.query.room)
-        .emit(connectRoomResult.event, {
-          msg: connectRoomResult.msg,
-          user: connectRoomResult.user
-        });
+        socket
+          .in(socket.handshake.query.room)
+          .emit(connectRoomResult.event, {
+            msg: connectRoomResult.msg,
+            user: connectRoomResult.user
+          });
+      } catch (error) {
+        socket.disconnect();
+        this.log.error('Error in socket');
+        this.log.error(JSON.stringify(error));
+      }
     });
   }
 }
