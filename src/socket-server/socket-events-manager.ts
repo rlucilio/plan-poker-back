@@ -1,11 +1,11 @@
-import { BaseClass } from '../model/base-class';
 import { ConnectListner } from './room/entrypoint/connect.listener';
+import { Log } from '../log/log';
 
-export class SocketEventsManager extends BaseClass {
+export class SocketEventsManager {
   connectListner?: ConnectListner;
 
   registerEventsListeners () {
-    this.log.info('Register Events Listeners');
+    Log.info('Register Events Listeners');
     this.connectListner = new ConnectListner();
   }
 }

@@ -1,19 +1,19 @@
 import socketServer from '../../socket-server';
 import { EventsReceivedsSocket } from '../../events-receiveds';
-import { BaseClass } from '../../../model/base-class';
 import { ICreateNewTaskModel } from '../usecase/model/create-new-task.model';
 import { CreateNewTaskUsecase } from '../usecase/create-new-task.usecase';
 import { ICreateNewTaskResult } from '../usecase/model/create-new-task.result';
 import { IGetAllVotesInTaskRequest } from './requests/get-all-votes-in-task.request';
 import { GetAllVotesInTaskUsecase } from '../usecase/get-all-votes-in-task.usecase';
 import { EventsEmmiterSocket } from '../../events-emmiter';
+import { Log } from '../../../log/log';
 
-export class TaskListener extends BaseClass {
+export class TaskListener {
   onCreateNewTask () {
     socketServer.addEventListener().then(socket => {
       socket.on(EventsReceivedsSocket.requestNewCreateTask, (createNewTaskModel: ICreateNewTaskModel) => {
-        this.log.info(`New task -> ${socket.id}`);
-        this.log.info(`Room -> ${createNewTaskModel.roomName}`);
+        Log.info(`New task -> ${socket.id}`);
+        Log.info(`Room -> ${createNewTaskModel.roomName}`);
 
         new CreateNewTaskUsecase().execute(createNewTaskModel).subscribe((result: ICreateNewTaskResult) => {
           socket.to(createNewTaskModel.roomName).emit(result?.event, result.task);
@@ -26,8 +26,8 @@ export class TaskListener extends BaseClass {
   onGetAllVotes () {
     socketServer.addEventListener().then(socket => {
       socket.on(EventsReceivedsSocket.getAllVotesInTask, (getAllVotesInTask: IGetAllVotesInTaskRequest) => {
-        this.log.info(`Get all votes in task-> ${socket.id}`);
-        this.log.info(`Room -> ${getAllVotesInTask.roomName}`);
+        Log.info(`Get all votes in task-> ${socket.id}`);
+        Log.info(`Room -> ${getAllVotesInTask.roomName}`);
 
         try {
           socket.to(getAllVotesInTask.roomName)

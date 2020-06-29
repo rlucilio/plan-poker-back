@@ -2,16 +2,16 @@ import { ErrorBase } from '../../../error/error-base';
 import { ErrorTypes } from '../../../error/error-types';
 import { IConnectRoomModel } from './model/connect-room.model';
 import { IRoom } from '../../../model/interfaces/room';
-import { BaseClass } from '../../../model/base-class';
+import { Log } from '../../../log/log';
 import { ConnectUserRoomUsecase } from './connect-user-room.usecase';
 import { ConnectRoomObserver } from './connect-room-obeserver.usecase';
 import { IConnectRoomResult } from './model/connect-room-result.model';
 import { RoomGateway } from '../../../gateway/room.gateway';
 
-export class ConnectRoomUsecase extends BaseClass {
+export class ConnectRoomUsecase {
   roomGateway = new RoomGateway();
   execute (connectRoomModel: IConnectRoomModel, userSocketId: string): IConnectRoomResult {
-    this.log.info('Execute');
+    Log.info('ConnectRoomUsecase.Execute');
 
     this.verifyExistRoom(connectRoomModel);
 

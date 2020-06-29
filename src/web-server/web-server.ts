@@ -2,15 +2,15 @@ import express, { Express } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { urlencoded, json } from 'body-parser';
-import { BaseClass } from '../model/base-class';
 import { RouterManager } from './router-manager';
+import { Log } from '../log/log';
 
-class WebServer extends BaseClass {
+class WebServer {
   private _serve: Express = express();
   private routers = new RouterManager();
 
   private createMiddlewares () {
-    this.log.info('Init middlewares');
+    Log.info('Init middlewares');
     this.serve.use(morgan('dev'));
     this.serve.use(urlencoded({ extended: false }));
     this.serve.use(json());
@@ -18,7 +18,7 @@ class WebServer extends BaseClass {
   }
 
   private createRoutes () {
-    this.log.info('Init routes');
+    Log.info('Init routes');
   }
 
   get serve (): Express {

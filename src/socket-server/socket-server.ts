@@ -1,10 +1,10 @@
 import http from 'http';
 import socketIO from 'socket.io';
-import { BaseClass } from '../model/base-class';
 import webServer from '../web-server/web-server';
 import { SocketEventsManager } from './socket-events-manager';
+import { Log } from '../log/log';
 
-class SocketServer extends BaseClass {
+class SocketServer {
   private serve?: http.Server;
   private socketEventsManager = new SocketEventsManager();
   socket?: socketIO.Server;
@@ -16,7 +16,7 @@ class SocketServer extends BaseClass {
 
   private listenServe () {
     this.serve?.listen(process.env.port);
-    this.log.info(`Server running -> ${process.env.host}:${process.env.port}`);
+    Log.info(`Server running -> ${process.env.host}:${process.env.port}`);
   }
 
   initSocketServer () {
@@ -32,8 +32,8 @@ class SocketServer extends BaseClass {
           resolve(socket);
         } catch (error) {
           socket.disconnect();
-          this.log.error('Error in socket');
-          this.log.error(JSON.stringify(error));
+          Log.error('Error in socket');
+          Log.error(JSON.stringify(error));
           reject(error);
         }
       });

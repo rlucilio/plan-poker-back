@@ -1,13 +1,13 @@
-import { BaseClass } from '../../../model/base-class';
+import { Log } from '../../../log/log';
 import { Socket } from 'socket.io';
 import socketServer from '../../socket-server';
 import { ConnectRoomUsecase } from '../usecase/connect-room.usecase';
 
-export class ConnectListner extends BaseClass {
+export class ConnectListner {
   onConnection () {
     socketServer.addEventListener().then(socket => {
-      this.log.info(`New Socket connection -> ${socket.id}`);
-      this.log.info(`User -> ${socket.handshake.query.user}`);
+      Log.info(`New Socket connection -> ${socket.id}`);
+      Log.info(`User -> ${socket.handshake.query.user}`);
 
       try {
         const connectRoomResult = new ConnectRoomUsecase().execute({
@@ -25,8 +25,8 @@ export class ConnectListner extends BaseClass {
           });
       } catch (error) {
         socket.disconnect();
-        this.log.error('Error in socket');
-        this.log.error(JSON.stringify(error));
+        Log.error('Error in socket');
+        Log.error(JSON.stringify(error));
       }
     });
   }

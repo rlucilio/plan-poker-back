@@ -1,12 +1,12 @@
-import { BaseClass } from '../../../model/base-class';
 import { IConnectRoomResult } from './model/connect-room-result.model';
 import { EventsEmmiterSocket } from '../../events-emmiter';
 import { RoomGateway } from '../../../gateway/room.gateway';
+import { Log } from '../../../log/log';
 
-export class ConnectRoomObserver extends BaseClass {
+export class ConnectRoomObserver {
   private roomGateway = new RoomGateway();
   execute (roomName: string, socketId: string): IConnectRoomResult {
-    this.log.info('Execute');
+    Log.info('Execute');
     this.roomGateway.addObserserInRoom(roomName, {
       idSocket: socketId
     });

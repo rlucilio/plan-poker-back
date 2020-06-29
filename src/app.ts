@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
-import { BaseClass } from './model/base-class';
 import webServer from './web-server/web-server';
 import socketServer from './socket-server/socket-server';
+import log4js from 'log4js';
+import { Log } from './log/log';
 
-class App extends BaseClass {
+class App {
   main () {
-    this.log.info('Init');
+    Log.info('Init');
     dotenv.config();
 
     webServer.initWebServer();
