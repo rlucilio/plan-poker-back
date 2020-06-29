@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { CreateRoomUsecase } from '../usecase/create-room.usecase';
 import { FindRoomUsecase } from '../usecase/find-room.usecase';
 import { Log } from '../../../log/log';
+import { RoutersWebServer } from '../../routers';
 
 export class RoomController {
   private createRoomUsecase = new CreateRoomUsecase();
@@ -30,7 +31,7 @@ export class RoomController {
   }
 
   private verifyExistRoom () {
-    this.routerManager.get('/find/:name', (request, response) => {
+    this.routerManager.get(RoutersWebServer.room.find, (request, response) => {
       Log.info(`Request body -> ${request.params.name}`);
 
       try {

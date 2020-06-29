@@ -6,7 +6,11 @@ import { IGetListTasksModel } from './model/get-list-tasks.model';
 export class GetListTasksUsecase {
   roomGateway = new RoomGateway();
   execute (roomName: string): IGetListTasksModel[] {
-    if (!this.roomGateway.findRoomByName(roomName).settingsRoom?.keepHistory) {
+    const room = this.roomGateway.findRoomByName(roomName);
+
+    if (!room) { throw new ErrorBase('Room not exist', ErrorTypes.Role, roomName); }
+
+    if (!room?.settingsRoom?.keepHistory) {
       throw new ErrorBase('Room not keep history tasks', ErrorTypes.Role, roomName);
     }
 

@@ -7,7 +7,7 @@ import { Log } from '../log/log';
 export class RouterManager {
   registerRouters () {
     Log.info('Register Routers');
-    webServer.serve.use(RoutersWebServer.room, new RoomController().route);
-    webServer.serve.use(RoutersWebServer.task, new TaskController().route);
+    webServer.serve.use(RoutersWebServer.room.base, new RoomController().route);
+    webServer.serve.use(RoutersWebServer.task.base, new TaskController().route);
   }
 }

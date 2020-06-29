@@ -10,10 +10,12 @@ export class CreateRoomUsecase {
   execute (createSessionModel: CreateRoomModel.room) {
     if (!createSessionModel || !createSessionModel.name || !createSessionModel.owner) { throw new ErrorBase('Request body invalid', ErrorTypes.Params, createSessionModel); }
 
-    if (this.roomGateway.findRoomByName(createSessionModel.name)) { throw new ErrorBase('There is already a room with that name', ErrorTypes.Role, createSessionModel); }
+    const roomName = createSessionModel.name.split(' ').join('_');
+
+    if (this.roomGateway.findRoomByName(roomName)) { throw new ErrorBase('There is already a room with that name', ErrorTypes.Role, createSessionModel); }
 
     const newRoom: IRoom = {
-      name: createSessionModel.name,
+      name: roomName,
       users: [
         {
           idSocket: '',
@@ -23,12 +25,17 @@ export class CreateRoomUsecase {
         }
       ],
       description: createSessionModel.description,
-      tasks: [],
+      tasks: [{
+        title: 'as',
+        id: 'sad',
+        description: 'das',
+        resultVoting: 212
+      }],
       observers: []
     };
     this.setSettingsRoom(newRoom, createSessionModel.settingsRoom);
     this.roomGateway.saveRoomBy(newRoom);
-    return createSessionModel;
+    return newRoom;
   }
 
   private setSettingsRoom (room: IRoom, settings?: CreateRoomModel.Settings) {
