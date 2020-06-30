@@ -8,9 +8,9 @@ import { GetAllVotesInTaskUsecase } from '../usecase/get-all-votes-in-task.useca
 import { EventsEmmiterSocket } from '../../events-emmiter';
 import { Log } from '../../../log/log';
 
-export class TaskListener {
+export class TaskHandler {
   onCreateNewTask () {
-    socketServer.addEventListener().then(socket => {
+    socketServer.getHandler().subscribe(socket => {
       socket.on(EventsReceivedsSocket.requestNewCreateTask, (createNewTaskModel: ICreateNewTaskModel) => {
         Log.info(`New task -> ${socket.id}`);
         Log.info(`Room -> ${createNewTaskModel.roomName}`);
@@ -24,7 +24,7 @@ export class TaskListener {
   }
 
   onGetAllVotes () {
-    socketServer.addEventListener().then(socket => {
+    socketServer.getHandler().subscribe(socket => {
       socket.on(EventsReceivedsSocket.getAllVotesInTask, (getAllVotesInTask: IGetAllVotesInTaskRequest) => {
         Log.info(`Get all votes in task-> ${socket.id}`);
         Log.info(`Room -> ${getAllVotesInTask.roomName}`);

@@ -7,9 +7,9 @@ import { FlipVotesUsecase } from '../usecase/flip-votes.usecase';
 import { IFlipRequest } from './request/flip.request';
 import { Log } from '../../../log/log';
 
-export class VoteListener {
+export class VoteHandler {
   onVote () {
-    socketServer.addEventListener().then(socket => {
+    socketServer.getHandler().subscribe(socket => {
       socket.on(EventsReceivedsSocket.voteTask, (voteRequest: IVoteRequest) => {
         Log.info(`Vote in task -> ${socket.id}`);
         Log.info(`Room -> ${socket.handshake.query.room}`);
@@ -25,7 +25,7 @@ export class VoteListener {
   }
 
   onFlip () {
-    socketServer.addEventListener().then(socket => {
+    socketServer.getHandler().subscribe(socket => {
       socket.on(EventsReceivedsSocket.flipVotes, (flipRequest: IFlipRequest) => {
         Log.info(`Flip in votes -> ${socket.id}`);
         Log.info(`Room -> ${socket.handshake.query.room}`);

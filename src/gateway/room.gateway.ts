@@ -34,7 +34,7 @@ export class RoomGateway {
   updateUserInRoom (roomName: string, userUpdate: IUser, nameUser: string) {
     const room = this.findRoomByName(roomName);
     let userExist = room.users.find(user => user.name === nameUser);
-    userExist = userUpdate;
+    userExist = Object.assign(userExist, userUpdate);
     this.saveRoomBy(room);
   }
 

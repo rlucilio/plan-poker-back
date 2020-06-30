@@ -20,17 +20,11 @@ export class CreateRoomUsecase {
         {
           idSocket: '',
           votes: [],
-          name: createSessionModel.owner,
-          owner: true
+          name: createSessionModel.owner
         }
       ],
       description: createSessionModel.description,
-      tasks: [{
-        title: 'as',
-        id: 'sad',
-        description: 'das',
-        resultVoting: 212
-      }],
+      tasks: [],
       observers: []
     };
     this.setSettingsRoom(newRoom, createSessionModel.settingsRoom);

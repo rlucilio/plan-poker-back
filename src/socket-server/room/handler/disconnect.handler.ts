@@ -1,0 +1,26 @@
+import socketServer from '../../socket-server';
+import { Log } from '../../../log/log';
+import { VerifyIfConnectedRoomUsecase } from '../usecase/verify-connected-room.usecase';
+import { EventsEmmiterSocket } from '../../events-emmiter';
+import { IUserResultModel } from '../usecase/model/user-result.model';
+
+export class DisconnectHandler {
+  onDisconnect () {
+    socketServer.getHandler().subscribe(socket => {
+      try {
+        socket.on('disconnect', () => {
+          Log.info(`Socket disconnect -> ${socket.id}`);
+          Log.info(`User -> ${socket.handshake.query.user}`);
+          const userInRoom = new VerifyIfConnectedRoomUsecase().execute(socket.handshake.query.room, socket.id);
+
+          if (userInRoom as IUserResultModel) {
+            socket.to(socket.handshake.query.room).emit(EventsEmmiterSocket.userDisconnected, userInRoom);
+          }
+        });
+      } catch (error) {
+        Log.error('Error in socket');
+        Log.error(JSON.stringify(error));
+      }
+    });
+  }
+}

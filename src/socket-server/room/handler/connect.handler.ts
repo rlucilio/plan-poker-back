@@ -1,11 +1,10 @@
 import { Log } from '../../../log/log';
-import { Socket } from 'socket.io';
 import socketServer from '../../socket-server';
 import { ConnectRoomUsecase } from '../usecase/connect-room.usecase';
 
-export class ConnectListner {
+export class ConnectHandler {
   onConnection () {
-    socketServer.addEventListener().then(socket => {
+    socketServer.getHandler().subscribe(socket => {
       Log.info(`New Socket connection -> ${socket.id}`);
       Log.info(`User -> ${socket.handshake.query.user}`);
 
@@ -18,13 +17,14 @@ export class ConnectListner {
         socket.join(socket.handshake.query.room);
 
         socket
-          .in(socket.handshake.query.room)
+          .to(socket.handshake.query.room)
           .emit(connectRoomResult.event, {
             msg: connectRoomResult.msg,
-            user: connectRoomResult.user
+            user: connectRoomResult.user,
+            socketId: socket.id
           });
       } catch (error) {
-        socket.disconnect();
+        socket?.disconnect();
         Log.error('Error in socket');
         Log.error(JSON.stringify(error));
       }

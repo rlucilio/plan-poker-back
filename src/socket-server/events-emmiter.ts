@@ -8,5 +8,6 @@ export enum EventsEmmiterSocket {
     allVotes = 'all_votes',
     allUserVote = 'all_user_votes',
     flipVotesResult = 'flip_votes_result',
+    userDisconnected = 'user_disconnected',
     error = 'error'
 }

@@ -3,10 +3,13 @@ import socketIO from 'socket.io';
 import webServer from '../web-server/web-server';
 import { SocketEventsManager } from './socket-events-manager';
 import { Log } from '../log/log';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 class SocketServer {
   private serve?: http.Server;
   private socketEventsManager = new SocketEventsManager();
+  private onHandler = new BehaviorSubject<socketIO.Socket | null>(null);
   socket?: socketIO.Server;
 
   private createServe () {
@@ -17,27 +20,27 @@ class SocketServer {
   private listenServe () {
     this.serve?.listen(process.env.port);
     Log.info(`Server running -> ${process.env.host}:${process.env.port}`);
+    this.socket?.on('connection', socket => {
+      try {
+        Log.info('OnConnection');
+        this.onHandler.next(socket);
+      } catch (error) {
+        socket.disconnect();
+        Log.error('Error');
+        Log.error(JSON.stringify(error));
+        this.onHandler.error(error);
+      }
+    });
+  }
+
+  getHandler () {
+    return this.onHandler.pipe(filter(socket => socket !== null)) as Observable<socketIO.Socket>;
   }
 
   initSocketServer () {
     this.createServe();
     this.listenServe();
     this.socketEventsManager.registerEventsListeners();
-  }
-
-  addEventListener (): Promise<socketIO.Socket> {
-    return new Promise((resolve, reject) => {
-      this.socket?.on('connection', socket => {
-        try {
-          resolve(socket);
-        } catch (error) {
-          socket.disconnect();
-          Log.error('Error in socket');
-          Log.error(JSON.stringify(error));
-          reject(error);
-        }
-      });
-    });
   }
 }
 
