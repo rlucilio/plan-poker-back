@@ -1,6 +1,7 @@
 import { Log } from '../../../log/log';
 import socketServer from '../../socket-server';
 import { ConnectRoomUsecase } from '../usecase/connect-room.usecase';
+import { stringify } from 'flatted';
 
 export class ConnectHandler {
   onConnection () {
@@ -17,7 +18,14 @@ export class ConnectHandler {
         socket.join(socket.handshake.query.room);
 
         socket
-          .to(socket.handshake.query.room)
+          .in(socket.handshake.query.room)
+          .emit(connectRoomResult.event, {
+            msg: connectRoomResult.msg,
+            user: connectRoomResult.user,
+            socketId: socket.id
+          });
+
+        socket
           .emit(connectRoomResult.event, {
             msg: connectRoomResult.msg,
             user: connectRoomResult.user,
@@ -26,7 +34,7 @@ export class ConnectHandler {
       } catch (error) {
         socket?.disconnect();
         Log.error('Error in socket');
-        Log.error(JSON.stringify(error));
+        Log.error(stringify(error));
       }
     });
   }

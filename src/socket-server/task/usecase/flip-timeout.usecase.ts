@@ -12,24 +12,27 @@ export class FlipTimeoutUsecase {
     private generateResultTaskUsecase = new GenerateResultTaskUsecase();
 
     execute (flipTimeoutModel: IFlipTimeoutModel): Observable<IFlipTimeoutResult> {
-      const room = this.roomGateway.findRoomByName(flipTimeoutModel.roomName);
-      const task = room.tasks.find(task => task.id === flipTimeoutModel.taskId);
+      try {
+        const room = this.roomGateway.findRoomByName(flipTimeoutModel.roomName);
+        const task = room.tasks.find(task => task.id === flipTimeoutModel.taskId);
 
-      if (!task) { throw new ErrorBase('Task not found', ErrorTypes.Role, flipTimeoutModel); }
+        if (!task) { throw new ErrorBase('Task not found', ErrorTypes.Role, flipTimeoutModel); }
 
-      if (room.settingsRoom?.enableFlipCardsTimeout) {
-        setTimeout(() => {
-          const resultVotting = this.generateResultTaskUsecase.execute(flipTimeoutModel.roomName, flipTimeoutModel.taskId);
+        if (room.settingsRoom?.enableFlipCardsTimeout) {
+          setTimeout(() => {
+            const resultVotting = this.generateResultTaskUsecase.execute(flipTimeoutModel.roomName, flipTimeoutModel.taskId);
 
-          this.subjectFlipTimeout.next({
-            resultVotting: resultVotting,
-            taskId: task.id
-          });
+            this.subjectFlipTimeout.next({
+              taskId: task.id
+            });
 
+            this.subjectFlipTimeout.complete();
+          }, room.settingsRoom?.timeoutFlipCards || 0);
+        } else {
           this.subjectFlipTimeout.complete();
-        }, room.settingsRoom?.timeoutFlipCards || 0);
-      } else {
-        this.subjectFlipTimeout.complete();
+        }
+      } catch (error) {
+        this.subjectFlipTimeout.error(error);
       }
 
       return this.subjectFlipTimeout;

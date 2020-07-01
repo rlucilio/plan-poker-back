@@ -6,7 +6,7 @@ export class VerifyIfAllUserVotesUsecase {
     const room = this.roomGatey.findRoomByName(roomName);
 
     if (room.settingsRoom?.autoFlipCards) {
-      return room.users.every(user => user.votes);
+      return room.users.every(user => user.votes?.find(vote => vote.task.id === taskId));
     }
 
     return false;

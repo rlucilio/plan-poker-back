@@ -16,9 +16,14 @@ export class TaskHandler {
         Log.info(`Room -> ${createNewTaskModel.roomName}`);
 
         new CreateNewTaskUsecase().execute(createNewTaskModel).subscribe((result: ICreateNewTaskResult) => {
-          socket.to(createNewTaskModel.roomName).emit(result?.event, result.task);
+          socket.in(createNewTaskModel.roomName).emit(result?.event, result.task);
+          socket.emit(result.event, result.task);
         },
-        error => socket.emit(EventsEmmiterSocket.error, error));
+        error => socket.emit(EventsEmmiterSocket.error, {
+          error,
+          event: EventsReceivedsSocket.requestNewCreateTask,
+          params: createNewTaskModel
+        }));
       });
     });
   }
@@ -30,10 +35,16 @@ export class TaskHandler {
         Log.info(`Room -> ${getAllVotesInTask.roomName}`);
 
         try {
-          socket.to(getAllVotesInTask.roomName)
-            .emit(EventsEmmiterSocket.allVotes, new GetAllVotesInTaskUsecase().execute(getAllVotesInTask));
+          const result = new GetAllVotesInTaskUsecase().execute(getAllVotesInTask);
+          socket.in(getAllVotesInTask.roomName)
+            .emit(EventsEmmiterSocket.allVotes, result);
+          socket.emit(EventsEmmiterSocket.allVotes, result);
         } catch (error) {
-          socket.emit(EventsEmmiterSocket.error, error);
+          socket.emit(EventsEmmiterSocket.error, {
+            error,
+            event: EventsReceivedsSocket.getAllVotesInTask,
+            params: getAllVotesInTask
+          });
         }
       });
     });

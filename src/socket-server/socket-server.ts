@@ -5,6 +5,7 @@ import { SocketEventsManager } from './socket-events-manager';
 import { Log } from '../log/log';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { stringify } from 'flatted';
 
 class SocketServer {
   private serve?: http.Server;
@@ -27,7 +28,7 @@ class SocketServer {
       } catch (error) {
         socket.disconnect();
         Log.error('Error');
-        Log.error(JSON.stringify(error));
+        Log.error(stringify(error));
         this.onHandler.error(error);
       }
     });

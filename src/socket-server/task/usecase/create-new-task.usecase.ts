@@ -14,36 +14,40 @@ export class CreateNewTaskUsecase {
   private roomGateway = new RoomGateway();
 
   execute (createNewTaskModel: ICreateNewTaskModel) {
-    Log.info(`Execute -> ${createNewTaskModel.socketId}`);
-    const room: IRoom = this.roomGateway.findRoomByName(createNewTaskModel.roomName);
+    try {
+      const room: IRoom = this.roomGateway.findRoomByName(createNewTaskModel.roomName);
 
-    const newTask: ITaskRoom = {
-      id: room.tasks.length + createNewTaskModel.taskName,
-      description: createNewTaskModel.description,
-      title: createNewTaskModel.taskName,
-      votes: []
-    };
+      const newTask: ITaskRoom = {
+        id: room.tasks.length + createNewTaskModel.taskName.replace(/ /g, '_'),
+        description: createNewTaskModel.description,
+        title: createNewTaskModel.taskName,
+        votes: []
+      };
 
-    this.roomGateway.AddTask(newTask, createNewTaskModel.roomName);
+      this.roomGateway.AddTask(newTask, createNewTaskModel.roomName);
 
-    if (room.settingsRoom?.enableFlipCardsTimeout) {
-      this.flipTimeoutUsecase.execute({ roomName: createNewTaskModel.roomName, taskId: newTask.id }).subscribe(
-        result => this.notifyEventTask(EventsEmmiterSocket.timeoutFlipCards, result.taskId, newTask.description, newTask.title, result.resultVotting),
-        error => this.subjectCreateNewTask.error(error),
-        () => this.subjectCreateNewTask.complete());
-    } else {
-      this.notifyEventTask(EventsEmmiterSocket.newTask, newTask.id, newTask.description, newTask.title);
+      if (room.settingsRoom?.enableFlipCardsTimeout) {
+        this.flipTimeoutUsecase.execute({ roomName: createNewTaskModel.roomName, taskId: newTask.id }).subscribe(
+          result => this.notifyEventTask(EventsEmmiterSocket.timeoutFlipCards, result.taskId, newTask.description, newTask.title),
+          error => this.subjectCreateNewTask.error(error),
+          () => this.subjectCreateNewTask.complete());
+        this.notifyEventTask(EventsEmmiterSocket.newTask, newTask.id, newTask.description, newTask.title);
+      } else {
+        this.notifyEventTask(EventsEmmiterSocket.newTask, newTask.id, newTask.description, newTask.title);
+        this.subjectCreateNewTask.complete();
+      }
+    } catch (error) {
+      this.subjectCreateNewTask.error(error);
     }
 
     return this.subjectCreateNewTask;
   }
 
-  private notifyEventTask (event: string, taskId: string, description: string, taskName: string, valueVotting: number | undefined = undefined) {
+  private notifyEventTask (event: string, taskId: string, description: string, taskName: string) {
     this.subjectCreateNewTask.next({
       event: event,
       task: {
         id: taskId,
-        value: valueVotting,
         description: description,
         title: taskName
       }

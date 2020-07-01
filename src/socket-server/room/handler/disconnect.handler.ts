@@ -3,6 +3,7 @@ import { Log } from '../../../log/log';
 import { VerifyIfConnectedRoomUsecase } from '../usecase/verify-connected-room.usecase';
 import { EventsEmmiterSocket } from '../../events-emmiter';
 import { IUserResultModel } from '../usecase/model/user-result.model';
+import { stringify } from 'flatted';
 
 export class DisconnectHandler {
   onDisconnect () {
@@ -14,12 +15,12 @@ export class DisconnectHandler {
           const userInRoom = new VerifyIfConnectedRoomUsecase().execute(socket.handshake.query.room, socket.id);
 
           if (userInRoom as IUserResultModel) {
-            socket.to(socket.handshake.query.room).emit(EventsEmmiterSocket.userDisconnected, userInRoom);
+            socket.in(socket.handshake.query.room).emit(EventsEmmiterSocket.userDisconnected, userInRoom);
           }
         });
       } catch (error) {
         Log.error('Error in socket');
-        Log.error(JSON.stringify(error));
+        Log.error(stringify(error));
       }
     });
   }
