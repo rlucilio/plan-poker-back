@@ -56,8 +56,10 @@ export class RoomGateway {
   updateTask (nameRoom: string, newTask: ITaskRoom) {
     const room = this.findRoomByName(nameRoom);
 
-    let oldTask = room.tasks.find(task => task.id === newTask.id);
-    oldTask = newTask;
+    const oldTask = room.tasks.find(task => task.id === newTask.id);
+
+    if (oldTask) { oldTask.resultVoting = newTask.resultVoting; }
+
     this.saveRoomBy(room);
   }
 

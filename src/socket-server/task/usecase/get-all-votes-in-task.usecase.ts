@@ -17,6 +17,10 @@ export class GetAllVotesInTaskUsecase {
       throw new ErrorBase('Task invalid', ErrorTypes.Role, getAllVotesIntaskModel);
     }
 
+    if (!task.resultVoting) {
+      throw new ErrorBase('Task not flip', ErrorTypes.Role, getAllVotesIntaskModel);
+    }
+
     const result: IGetAllVotesInTaskResult = {
       task: {
         title: task.title,
