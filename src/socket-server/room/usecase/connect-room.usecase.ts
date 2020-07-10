@@ -24,6 +24,6 @@ export class ConnectRoomUsecase {
 
   private verifyExistRoom (model: IConnectRoomModel) {
     const room: IRoom = this.roomGateway.findRoomByName(model.room);
-    if (!room) { throw new ErrorBase('Room invalid', ErrorTypes.Params, { model, room }); }
+    if (!room) { throw new ErrorBase('Sala não existe', ErrorTypes.Params, { model, room }); }
   }
 }

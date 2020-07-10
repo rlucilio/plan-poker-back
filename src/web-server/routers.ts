@@ -5,7 +5,12 @@ export const RoutersWebServer = {
   },
   task: {
     base: '/task',
-    find: '/:room',
+    getAll: '/:room',
+    history: '/:room/history',
     getLast: '/:room/last'
+  },
+  user: {
+    base: '/user',
+    getAllUsersInRoom: '/:room'
   }
 };

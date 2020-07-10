@@ -41,8 +41,8 @@ export class TaskHandler {
           socket.emit(EventsEmmiterSocket.allVotes, result);
         } catch (error) {
           socket.emit(EventsEmmiterSocket.error, {
-            error,
             event: EventsReceivedsSocket.getAllVotesInTask,
+            error,
             params: getAllVotesInTask
           });
         }

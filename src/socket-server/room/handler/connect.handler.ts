@@ -2,6 +2,8 @@ import { Log } from '../../../log/log';
 import socketServer from '../../socket-server';
 import { ConnectRoomUsecase } from '../usecase/connect-room.usecase';
 import { stringify } from 'flatted';
+import { EventsEmmiterSocket } from '../../events-emmiter';
+import { ErrorBase } from '../../../error/error-base';
 
 export class ConnectHandler {
   onConnection () {
@@ -32,6 +34,15 @@ export class ConnectHandler {
             socketId: socket.id
           });
       } catch (error) {
+        socket.emit(EventsEmmiterSocket.error, {
+          event: 'Connect',
+          error,
+          params: {
+            room: socket.handshake.query.room,
+            user: socket.handshake.query.user
+          }
+        });
+
         socket?.disconnect();
         Log.error('Error in socket');
         Log.error(stringify(error));
