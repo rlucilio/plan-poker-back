@@ -8,7 +8,7 @@ import { RoomGateway } from '../../../gateway/room.gateway';
 export class CreateRoomUsecase {
   roomGateway = new RoomGateway();
   execute (createSessionModel: CreateRoomModel.room) {
-    if (!createSessionModel || !createSessionModel.name || !createSessionModel.owner) { throw new ErrorBase('Request body invalid', ErrorTypes.Params, createSessionModel); }
+    if (!createSessionModel || !createSessionModel.name) { throw new ErrorBase('Request body invalid', ErrorTypes.Params, createSessionModel); }
 
     const roomName = createSessionModel.name.split(' ').join('_');
 
@@ -16,14 +16,8 @@ export class CreateRoomUsecase {
 
     const newRoom: IRoom = {
       name: roomName,
-      users: [
-        {
-          idSocket: '',
-          votes: [],
-          name: createSessionModel.owner
-        }
-      ],
       description: createSessionModel.description,
+      users: [],
       tasks: [],
       observers: []
     };
