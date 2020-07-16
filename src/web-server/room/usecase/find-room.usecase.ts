@@ -12,7 +12,7 @@ export class FindRoomUsecase {
     const room: IRoom = this.roomGateway.findRoomByName(nameSession);
 
     if (!room) {
-      throw new ErrorBase('Session no exist', ErrorTypes.Role, nameSession);
+      throw new ErrorBase('Sala não existe', ErrorTypes.Role, nameSession);
     }
 
     const result: IFindRoomUsecase = {

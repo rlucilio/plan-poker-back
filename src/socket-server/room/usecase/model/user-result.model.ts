@@ -1,4 +1,4 @@
 export interface IUserResultModel {
-    name: string;
-    socketId: string;
+    name?: string;
+    socketId?: string;
 }

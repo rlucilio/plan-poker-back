@@ -25,7 +25,12 @@ export class GetLastTaskUsecase {
             name: vote.user.name
           },
           votting: vote.votting
-        })) : [],
+        })) : lastTask.votes.map(vote => ({
+          user: {
+            idSocket: vote.user.idSocket,
+            name: vote.user.name
+          }
+        })),
         resultVoting: lastTask.resultVoting
       };
     }

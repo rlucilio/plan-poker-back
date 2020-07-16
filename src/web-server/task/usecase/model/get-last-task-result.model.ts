@@ -4,7 +4,7 @@ export interface IGetLastTaskResultModel {
     description: string;
     resultVoting?: number;
     votes: {
-        votting: number;
+        votting?: number;
         user: {
             idSocket: string;
             name: string;
