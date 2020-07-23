@@ -22,13 +22,15 @@ export class GetLastTaskUsecase {
         votes: lastTask.resultVoting ? lastTask.votes.map(vote => ({
           user: {
             idSocket: vote.user.idSocket,
-            name: vote.user.name
+            name: vote.user.name,
+            uuid: vote.user.uuid
           },
           votting: vote.votting
         })) : lastTask.votes.map(vote => ({
           user: {
             idSocket: vote.user.idSocket,
-            name: vote.user.name
+            name: vote.user.name,
+            uuid: vote.user.uuid
           }
         })),
         resultVoting: lastTask.resultVoting

@@ -41,7 +41,7 @@ export class FindRoomUsecase {
         })),
         resultVoting: task.resultVoting
       })),
-      users: room.users.map(user => ({ idSocket: user.idSocket, name: user.name }))
+      users: room.users.map(user => ({ idSocket: user.idSocket, name: user.name, uuid: user.uuid }))
     };
 
     return result;

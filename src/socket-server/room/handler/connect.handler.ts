@@ -14,7 +14,8 @@ export class ConnectHandler {
       try {
         const connectRoomResult = new ConnectRoomUsecase().execute({
           room: socket.handshake.query.room,
-          user: socket.handshake.query.user
+          user: socket.handshake.query.user,
+          uuid: socket.handshake.query.uuid
         }, socket.id);
 
         socket.join(socket.handshake.query.room);

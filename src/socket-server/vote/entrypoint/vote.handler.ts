@@ -36,7 +36,7 @@ export class VoteHandler {
 
   onFlip () {
     socketServer.getHandler().subscribe(socket => {
-      socket.on(EventsEmmiterSocket.flipVotesResult, (flipRequest: IFlipRequest) => {
+      socket.on(EventsReceivedsSocket.flipVotes, (flipRequest: IFlipRequest) => {
         Log.info(`Flip in votes -> ${socket.id}`);
         Log.info(`Room -> ${socket.handshake.query.room}`);
 

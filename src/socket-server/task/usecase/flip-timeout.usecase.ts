@@ -20,7 +20,7 @@ export class FlipTimeoutUsecase {
 
         if (room.settingsRoom?.enableFlipCardsTimeout) {
           setTimeout(() => {
-            const resultVotting = this.generateResultTaskUsecase.execute(flipTimeoutModel.roomName, flipTimeoutModel.taskId);
+            this.generateResultTaskUsecase.execute(flipTimeoutModel.roomName, flipTimeoutModel.taskId);
 
             this.subjectFlipTimeout.next({
               taskId: task.id

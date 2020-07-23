@@ -20,8 +20,8 @@ export class RoomGateway {
     this.saveRoomBy(room);
   }
 
-  findUserInRoomByName (roomName: string, nameUser: string) {
-    return this.findRoomByName(roomName).users.find(user => user.name === nameUser);
+  findUserInRoomByUUID (roomName: string, uuid: string) {
+    return this.findRoomByName(roomName).users.find(user => user.uuid === uuid);
   }
 
   addUserInRoom (roomName: string, user: IUser) {
@@ -31,9 +31,9 @@ export class RoomGateway {
     this.saveRoomBy(room);
   }
 
-  updateUserInRoom (roomName: string, userUpdate: IUser, nameUser: string) {
+  updateUserInRoom (roomName: string, userUpdate: IUser, uuid: string) {
     const room = this.findRoomByName(roomName);
-    let userExist = room.users.find(user => user.name === nameUser);
+    let userExist = room.users.find(user => user.uuid === uuid);
     userExist = Object.assign(userExist, userUpdate);
     this.saveRoomBy(room);
   }

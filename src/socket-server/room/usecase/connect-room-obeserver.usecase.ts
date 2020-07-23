@@ -11,7 +11,7 @@ export class ConnectRoomObserver {
     Log.info('Execute');
     const room = this.roomGateway.findRoomByName(roomName);
 
-    if (!room.settingsRoom?.enableObserver) {throw new ErrorBase('Não é possível observar essa sala', ErrorTypes.Role, {roomName, socketId})}
+    if (!room.settingsRoom?.enableObserver) { throw new ErrorBase('Não é possível observar essa sala', ErrorTypes.Role, { roomName, socketId }); }
     this.roomGateway.addObserserInRoom(roomName, {
       idSocket: socketId
     });

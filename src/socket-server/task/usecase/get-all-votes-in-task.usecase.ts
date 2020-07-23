@@ -30,6 +30,7 @@ export class GetAllVotesInTaskUsecase {
       votes: task.votes.map(vote => ({
         userName: vote.user.name,
         userId: vote.user.idSocket,
+        uuid: vote.user.uuid,
         vote: vote.votting
       }))
     };

@@ -10,6 +10,6 @@ export class GetUsersInRoomUsecase {
 
     if (!room) { throw new ErrorBase('Room not exist', ErrorTypes.Role, roomName); }
 
-    return room.users.map(user => ({ name: user.name, id: user.idSocket }));
+    return room.users.map(user => ({ name: user.name, socketId: user.idSocket, uuid: user.uuid }));
   }
 }

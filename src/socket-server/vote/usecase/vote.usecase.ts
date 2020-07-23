@@ -22,16 +22,16 @@ export class VoteUsecase {
     try {
       const room = this.roomGateway.findRoomByName(voteModel.roomName);
       const task = room.tasks.find(task => task.id === voteModel.taskId);
-      const userVoting = room.users.find(userFind => userFind.idSocket === voteModel.socketId);
+      const userVoting = room.users.find(userFind => userFind.uuid === voteModel.uuid);
 
       if (!room || !task || !userVoting) {
         throw new ErrorBase('Params vote invalid', ErrorTypes.Params, voteModel);
       }
 
       const voteExist = task.votes.find(vote =>
-        (vote.user.idSocket === voteModel.socketId && vote.task.id === voteModel.taskId));
+        (vote.user.uuid === voteModel.uuid && vote.task.id === voteModel.taskId));
 
-      if (voteExist && task.resultVoting) {
+      if (voteExist) {
         if (task.resultVoting) {
           if (room.settingsRoom?.changeVoteAfterReveal) {
             this.vote(room, task, voteModel.value, userVoting, voteExist, task.resultVoting);
@@ -53,10 +53,12 @@ export class VoteUsecase {
     const userResult: {
       name: string,
       socketId: string,
+      uuid?: string,
       votting?: number
     } = {
       name: user.name,
-      socketId: user.idSocket
+      socketId: user.idSocket,
+      uuid: user.uuid
     };
 
     if (voteExist) {

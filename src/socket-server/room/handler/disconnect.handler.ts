@@ -12,7 +12,7 @@ export class DisconnectHandler {
         socket.on('disconnect', () => {
           Log.info(`Socket disconnect -> ${socket.id}`);
           Log.info(`User -> ${socket.handshake.query.user}`);
-          const userInRoom = new VerifyIfConnectedRoomUsecase().execute(socket.handshake.query.room, socket.id);
+          const userInRoom = new VerifyIfConnectedRoomUsecase().execute(socket.handshake.query.room, socket.handshake.query.uuid, socket.id);
 
           if (userInRoom as IUserResultModel) {
             socket.in(socket.handshake.query.room).emit(EventsEmmiterSocket.userDisconnected, userInRoom);

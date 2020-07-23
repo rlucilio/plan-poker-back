@@ -10,12 +10,12 @@ export class ConnectUserRoomUsecase {
 
     execute (model: IConnectRoomModel, socketId: string): IConnectRoomResult {
       Log.info('ConnectUserRoomUsecase Execute');
-      const userExist = this.roomGateway.findUserInRoomByName(model.room, model.user);
+      const userExist = this.roomGateway.findUserInRoomByUUID(model.room, model.uuid);
 
       if (userExist) {
         Log.info(`ConnectUserRoomUsecase Send event ${EventsEmmiterSocket.returnRoom}`);
         userExist.idSocket = socketId;
-        this.roomGateway.updateUserInRoom(model.room, userExist, model.user);
+        this.roomGateway.updateUserInRoom(model.room, userExist, model.uuid);
 
         return {
           event: EventsEmmiterSocket.joinRoom,
@@ -28,6 +28,7 @@ export class ConnectUserRoomUsecase {
         const newUser: IUser = {
           idSocket: socketId,
           name: model.user,
+          uuid: model.uuid,
           votes: []
         };
 

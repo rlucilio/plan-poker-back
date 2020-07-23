@@ -3,4 +3,5 @@ export interface IVoteModel {
     socketId: string;
     roomName: string;
     taskId: string;
+    uuid: string;
 }
