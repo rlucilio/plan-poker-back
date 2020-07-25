@@ -1,5 +1,5 @@
-import { GetAllVotesInTaskUsecase } from '../../task/usecase/get-all-votes-in-task.usecase';
 import { EventsEmmiterSocket } from '../../events-emmiter';
+import { GetAllVotesInTaskUsecase } from '../../task/usecase/get-all-votes-in-task.usecase';
 import { IFlipModel } from './model/flip.model';
 import { IFlipResult } from './model/flip.result';
 

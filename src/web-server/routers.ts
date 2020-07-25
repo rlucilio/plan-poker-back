@@ -5,6 +5,7 @@ export const RoutersWebServer = {
   },
   task: {
     base: '/task',
+    reset: '/reset/:task',
     getAll: '/:room',
     history: '/:room/history',
     getLast: '/:room/last'

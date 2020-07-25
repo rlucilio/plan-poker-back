@@ -15,7 +15,7 @@ export class SocketEventsManager {
     Log.info('Register Events Listeners');
     this.connectHandler.onConnection();
     this.taskHandler.onCreateNewTask();
-    this.taskHandler.onGetAllVotes();
+    this.taskHandler.onResetTask();
     this.voteHandler.onFlip();
     this.voteHandler.onVote();
     this.disconnectHandler.onDisconnect();

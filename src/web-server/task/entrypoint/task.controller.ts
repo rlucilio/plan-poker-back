@@ -5,17 +5,20 @@ import { stringify } from 'flatted';
 import { RoutersWebServer } from '../../routers';
 import { GetLastTaskUsecase } from '../usecase/get-last-task.usecase';
 import { GetListTasksUsecase } from '../usecase/get-list-tasks.usecase';
+import { GetAllVotesInTaskUsecase } from '../usecase/get-all-votes-in-task.usecase';
 
 export class TaskController {
   routerManager = Router();
   private getListHistoryTasksUsecase = new GetListHistoryTasksUsecase();
   private getLastTaskUsecase = new GetLastTaskUsecase();
   private getListTasksUsecase = new GetListTasksUsecase();
+  private getAllVotes = new GetAllVotesInTaskUsecase();
 
   get route () {
     this.getHistoryTasks();
     this.getLastTask();
     this.getAllTasks();
+    this.getAllVotesInTask();
     return this.routerManager;
   }
 
@@ -60,4 +63,39 @@ export class TaskController {
       }
     });
   }
+
+  private getAllVotesInTask () {
+    this.routerManager.get(RoutersWebServer.task.reset, (req, res) => {
+      try {
+        Log.info(`Request param -> ${stringify(req.params)}`);
+        const result = this.getAllVotes.execute(req.params?.task, (req.query?.nameRoom as string));
+        Log.info(`Response -> ${stringify(result)}`);
+        res.status(200).json(result);
+      } catch (error) {
+        Log.error(`Erro in request -> ${stringify(error)}`);
+        res.status(400).json(error);
+      }
+    });
+  }
+  // onGetAllVotes() {
+  //   socketServer.getHandler().subscribe(socket => {
+  //     socket.on(EventsReceivedsSocket.getAllVotesInTask, (getAllVotesInTask: IGetAllVotesInTaskRequest) => {
+  //       Log.info(`Get all votes in task-> ${socket.id}`);
+  //       Log.info(`Room -> ${getAllVotesInTask.roomName}`);
+
+  //       try {
+  //         const result = new GetAllVotesInTaskUsecase().execute(getAllVotesInTask);
+  //         socket.in(getAllVotesInTask.roomName)
+  //           .emit(EventsEmmiterSocket.allVotes, result);
+  //         socket.emit(EventsEmmiterSocket.allVotes, result);
+  //       } catch (error) {
+  //         socket.emit(EventsEmmiterSocket.error, {
+  //           event: EventsReceivedsSocket.getAllVotesInTask,
+  //           error,
+  //           params: getAllVotesInTask
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
 }

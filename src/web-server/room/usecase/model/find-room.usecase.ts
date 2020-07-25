@@ -11,12 +11,14 @@ export interface IFindRoomUsecase {
             user: {
                 idSocket: string;
                 name: string;
+                uuid?: string;
             };
         }[];
     }[];
     users: {
         idSocket: string;
         name: string;
+        uuid?: string;
     }[];
     observers: {
         idSocket: string;

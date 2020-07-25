@@ -28,20 +28,31 @@ export class FindRoomUsecase {
         timeoutFlipCards: room.settingsRoom?.timeoutFlipCards || 0,
         typeRoom: room.settingsRoom?.typeRoom || ''
       },
-      tasks: room.tasks.map(task => ({
-        description: task.description,
-        id: task.id,
-        title: task.title,
-        votes: task.votes.map(vote => ({
-          votting: vote.votting,
-          user: {
-            idSocket: vote.user.idSocket,
-            name: vote.user.name
-          }
-        })),
-        resultVoting: task.resultVoting
-      })),
-      users: room.users.map(user => ({ idSocket: user.idSocket, name: user.name, uuid: user.uuid }))
+      users: room.users.map(user => {
+        return {
+          idSocket: user.idSocket,
+          name: user.name,
+          uuid: user.uuid
+        };
+      }),
+      tasks: room.tasks.map(task => {
+        return {
+          description: task.description,
+          id: task.id,
+          title: task.title,
+          resultVoting: task.resultVoting,
+          votes: task.votes.map(vote => {
+            return {
+              votting: vote.votting,
+              user: {
+                idSocket: vote.user.idSocket,
+                name: vote.user.name,
+                uuid: vote.user.uuid
+              }
+            };
+          })
+        };
+      })
     };
 
     return result;

@@ -12,7 +12,7 @@ export class RoomController {
 
   get route () {
     this.createRoom();
-    this.verifyExistRoom();
+    this.getRoom();
     return this.routerManager;
   }
 
@@ -30,7 +30,7 @@ export class RoomController {
     });
   }
 
-  private verifyExistRoom () {
+  private getRoom () {
     this.routerManager.get(RoutersWebServer.room.find, (request, response) => {
       Log.info(`Request body -> ${request.params.name}`);
 

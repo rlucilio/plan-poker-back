@@ -3,8 +3,7 @@ import { EventsReceivedsSocket } from '../../events-receiveds';
 import { ICreateNewTaskModel } from '../usecase/model/create-new-task.model';
 import { CreateNewTaskUsecase } from '../usecase/create-new-task.usecase';
 import { ICreateNewTaskResult } from '../usecase/model/create-new-task.result';
-import { IGetAllVotesInTaskRequest } from './requests/get-all-votes-in-task.request';
-import { GetAllVotesInTaskUsecase } from '../usecase/get-all-votes-in-task.usecase';
+import { IResetVotesInTaskRequest } from './requests/reset-votes-in-task.request';
 import { EventsEmmiterSocket } from '../../events-emmiter';
 import { Log } from '../../../log/log';
 
@@ -28,22 +27,19 @@ export class TaskHandler {
     });
   }
 
-  onGetAllVotes () {
+  onResetTask () {
     socketServer.getHandler().subscribe(socket => {
-      socket.on(EventsReceivedsSocket.getAllVotesInTask, (getAllVotesInTask: IGetAllVotesInTaskRequest) => {
-        Log.info(`Get all votes in task-> ${socket.id}`);
-        Log.info(`Room -> ${getAllVotesInTask.roomName}`);
+      socket.on(EventsReceivedsSocket.resetVotes, (resetVotes: IResetVotesInTaskRequest) => {
+        Log.info(`Reset Task -> ${socket.id}`);
+        Log.info('Room -> ');
 
         try {
-          const result = new GetAllVotesInTaskUsecase().execute(getAllVotesInTask);
-          socket.in(getAllVotesInTask.roomName)
-            .emit(EventsEmmiterSocket.allVotes, result);
-          socket.emit(EventsEmmiterSocket.allVotes, result);
+
         } catch (error) {
           socket.emit(EventsEmmiterSocket.error, {
             event: EventsReceivedsSocket.getAllVotesInTask,
             error,
-            params: getAllVotesInTask
+            params: resetVotes
           });
         }
       });
