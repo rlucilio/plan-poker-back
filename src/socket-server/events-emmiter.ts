@@ -10,5 +10,6 @@ export enum EventsEmmiterSocket {
     allUserVote = 'all_user_votes',
     flipVotesResult = 'flip_votes_result',
     userDisconnected = 'user_disconnected',
-    error = 'error_in_room'
+    error = 'error_in_room',
+    resetTask = 'reset_task'
 }

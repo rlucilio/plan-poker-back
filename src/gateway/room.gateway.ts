@@ -58,7 +58,12 @@ export class RoomGateway {
 
     const oldTask = room.tasks.find(task => task.id === newTask.id);
 
-    if (oldTask) { oldTask.resultVoting = newTask.resultVoting; }
+    if (oldTask) {
+      oldTask.resultVoting = newTask.resultVoting;
+      oldTask.description = newTask.description;
+      oldTask.title = newTask.title;
+      oldTask.votes = newTask.votes;
+    }
 
     this.saveRoomBy(room);
   }

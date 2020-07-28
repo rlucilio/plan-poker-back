@@ -2,7 +2,7 @@ import { ErrorBase } from '../../../error/error-base';
 import { ErrorTypes } from '../../../error/error-types';
 import { RoomGateway } from '../../../gateway/room.gateway';
 
-export class ResetVotesInTask {
+export class ResetVotesInTaskUsecase {
     private roomGateway = new RoomGateway();
 
     execute (taskId: string, roomName: string) {

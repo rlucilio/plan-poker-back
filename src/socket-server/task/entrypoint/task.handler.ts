@@ -6,6 +6,7 @@ import { ICreateNewTaskResult } from '../usecase/model/create-new-task.result';
 import { IResetVotesInTaskRequest } from './requests/reset-votes-in-task.request';
 import { EventsEmmiterSocket } from '../../events-emmiter';
 import { Log } from '../../../log/log';
+import { ResetVotesInTaskUsecase } from '../usecase/reset-votes-in-task.usecase';
 
 export class TaskHandler {
   onCreateNewTask () {
@@ -34,10 +35,12 @@ export class TaskHandler {
         Log.info('Room -> ');
 
         try {
-
+          new ResetVotesInTaskUsecase().execute(resetVotes.taskId, resetVotes.roomName);
+          socket.in(resetVotes.roomName).emit(EventsEmmiterSocket.resetTask);
+          socket.emit(EventsEmmiterSocket.resetTask);
         } catch (error) {
           socket.emit(EventsEmmiterSocket.error, {
-            event: EventsReceivedsSocket.getAllVotesInTask,
+            event: EventsReceivedsSocket.resetVotes,
             error,
             params: resetVotes
           });
