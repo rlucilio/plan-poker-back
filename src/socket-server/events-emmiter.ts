@@ -6,7 +6,6 @@ export enum EventsEmmiterSocket {
     newObserver = 'new_observer',
     newVote = 'new_vote',
     voteAfterReveal = 'vote_after_reveal',
-    allVotes = 'all_votes',
     allUserVote = 'all_user_votes',
     flipVotesResult = 'flip_votes_result',
     userDisconnected = 'user_disconnected',

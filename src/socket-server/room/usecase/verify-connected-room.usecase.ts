@@ -18,7 +18,8 @@ export class VerifyIfConnectedRoomUsecase {
 
       return {
         name: userExist?.name,
-        socketId: socketId
+        socketId: socketId,
+        uuid: userExist?.uuid
       };
     }
 }

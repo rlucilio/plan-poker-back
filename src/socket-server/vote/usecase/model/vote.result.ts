@@ -3,5 +3,6 @@ export interface IVoteResult {
     user?: {
         name: string;
         socketId: string;
+        uuid?: string
     };
 }

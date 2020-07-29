@@ -18,9 +18,10 @@ export class ConnectUserRoomUsecase {
         this.roomGateway.updateUserInRoom(model.room, userExist, model.uuid);
 
         return {
-          event: EventsEmmiterSocket.joinRoom,
-          msg: 'Entrou na sala',
-          user: userExist.name
+          event: EventsEmmiterSocket.returnRoom,
+          msg: 'Retornou à sala',
+          user: userExist.name,
+          uuid: userExist.uuid
         };
       } else {
         Log.info(`ConnectUserRoomUsecase Send event ${EventsEmmiterSocket.joinRoom}`);
@@ -37,7 +38,8 @@ export class ConnectUserRoomUsecase {
         return {
           event: EventsEmmiterSocket.joinRoom,
           msg: 'Entrou na sala',
-          user: model.user
+          user: model.user,
+          uuid: model.uuid
         };
       }
     }

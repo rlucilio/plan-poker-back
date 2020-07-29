@@ -77,25 +77,4 @@ export class TaskController {
       }
     });
   }
-  // onGetAllVotes() {
-  //   socketServer.getHandler().subscribe(socket => {
-  //     socket.on(EventsReceivedsSocket.getAllVotesInTask, (getAllVotesInTask: IGetAllVotesInTaskRequest) => {
-  //       Log.info(`Get all votes in task-> ${socket.id}`);
-  //       Log.info(`Room -> ${getAllVotesInTask.roomName}`);
-
-  //       try {
-  //         const result = new GetAllVotesInTaskUsecase().execute(getAllVotesInTask);
-  //         socket.in(getAllVotesInTask.roomName)
-  //           .emit(EventsEmmiterSocket.allVotes, result);
-  //         socket.emit(EventsEmmiterSocket.allVotes, result);
-  //       } catch (error) {
-  //         socket.emit(EventsEmmiterSocket.error, {
-  //           event: EventsReceivedsSocket.getAllVotesInTask,
-  //           error,
-  //           params: getAllVotesInTask
-  //         });
-  //       }
-  //     });
-  //   });
-  // }
 }
