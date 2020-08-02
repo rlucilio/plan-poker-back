@@ -21,7 +21,7 @@ export class ConnectUserRoomUsecase {
           event: EventsEmmiterSocket.returnRoom,
           msg: 'Retornou à sala',
           user: userExist.name,
-          uuid: userExist.uuid
+          uuid: model.uuid
         };
       } else {
         Log.info(`ConnectUserRoomUsecase Send event ${EventsEmmiterSocket.joinRoom}`);

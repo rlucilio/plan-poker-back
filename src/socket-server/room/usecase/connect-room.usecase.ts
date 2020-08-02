@@ -15,7 +15,7 @@ export class ConnectRoomUsecase {
 
     this.verifyExistRoom(connectRoomModel);
 
-    if (connectRoomModel.user) {
+    if (connectRoomModel.user && connectRoomModel.uuid) {
       return new ConnectUserRoomUsecase().execute(connectRoomModel, userSocketId);
     } else {
       return new ConnectRoomObserver().execute(connectRoomModel.room, userSocketId);

@@ -25,6 +25,7 @@ export class ConnectHandler {
           .emit(connectRoomResult.event, {
             msg: connectRoomResult.msg,
             user: connectRoomResult.user,
+            uuid: connectRoomResult.uuid,
             socketId: socket.id
           });
 
@@ -32,6 +33,7 @@ export class ConnectHandler {
           .emit(connectRoomResult.event, {
             msg: connectRoomResult.msg,
             user: connectRoomResult.user,
+            uuid: connectRoomResult.uuid,
             socketId: socket.id
           });
       } catch (error) {
