@@ -91,6 +91,7 @@ export class VoteUsecase {
     });
 
     if (this.verifyIfAllUserVotes.execute(room.name, task.id)) {
+      this.generateResultTaskUsecase.execute(room.name, task.id);
       this.resultObservable.next({
         event: EventsEmmiterSocket.allUserVote
       });
