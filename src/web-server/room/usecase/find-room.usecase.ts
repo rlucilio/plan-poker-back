@@ -6,7 +6,7 @@ import { IFindRoomUsecase } from './model/find-room.usecase';
 
 export class FindRoomUsecase {
   roomGateway = new RoomGateway();
-  execute (nameSession: string): IFindRoomUsecase {
+  execute (nameSession: string, user?: string): IFindRoomUsecase {
     nameSession = nameSession.replace(/ /g, '_');
 
     const room: IRoom = this.roomGateway.findRoomByName(nameSession);
@@ -43,7 +43,7 @@ export class FindRoomUsecase {
           resultVoting: task.resultVoting,
           votes: task.votes.map(vote => {
             return {
-              votting: vote.votting,
+              votting: (vote.user.uuid === user || task.resultVoting) ? vote.votting : null,
               user: {
                 idSocket: vote.user.idSocket,
                 name: vote.user.name,

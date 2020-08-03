@@ -7,7 +7,7 @@ export interface IFindRoomUsecase {
         description: string;
         resultVoting?: number;
         votes: {
-            votting: number;
+            votting: number | null;
             user: {
                 idSocket: string;
                 name: string;

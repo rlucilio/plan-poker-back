@@ -1,7 +1,8 @@
 export const RoutersWebServer = {
   room: {
     base: '/room',
-    find: '/find/:name'
+    find: '/find/:name',
+    observers: '/:name/observers'
   },
   task: {
     base: '/task',

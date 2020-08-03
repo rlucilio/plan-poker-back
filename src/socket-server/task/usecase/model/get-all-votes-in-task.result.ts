@@ -7,6 +7,7 @@ export interface IGetAllVotesInTaskResult {
     votes: Array<{
         userName: string;
         userId: string;
-        vote: number
+        vote: number;
+        uuid?: string;
     }>
 }

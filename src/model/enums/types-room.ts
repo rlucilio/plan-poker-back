@@ -1,5 +1,4 @@
 export enum TypesRoom {
     score = 'room_scores',
-    hours = 'room_hours',
-    fibonacci = 'room_fibonacci'
+    hours = 'room_hours'
 }

@@ -70,7 +70,8 @@ export class VoteUsecase {
         this.generateResultTaskUsecase.execute(room.name, task.id);
 
         this.resultObservable.next({
-          event: EventsEmmiterSocket.voteAfterReveal
+          event: EventsEmmiterSocket.voteAfterReveal,
+          user: userResult
         });
       }
     } else {
