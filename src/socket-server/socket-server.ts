@@ -19,8 +19,8 @@ class SocketServer {
   }
 
   private listenServe () {
-    this.serve?.listen(process.env.port);
-    Log.info(`Server running -> ${process.env.host}:${process.env.port}`);
+    this.serve?.listen(process.env.PORT || process.env.port);
+    Log.info(`Server running -> ${process.env.host}:${process.env.PORT || process.env.port}`);
     this.socket?.on('connection', socket => {
       try {
         Log.info('OnConnection');
