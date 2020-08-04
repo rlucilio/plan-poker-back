@@ -1,13 +1,13 @@
 import { ErrorBase } from '../../../error/error-base';
 import { ErrorTypes } from '../../../error/error-types';
 import { IRoom } from '../../../model/interfaces/room';
-import { CreateRoomModel } from './model/create-session.model';
+import { CreateRoomModel, CreateSettingsModel } from './model/create-session.model';
 import { TypesRoom } from '../../../model/enums/types-room';
 import { RoomGateway } from '../../../gateway/room.gateway';
 
 export class CreateRoomUsecase {
   roomGateway = new RoomGateway();
-  execute (createSessionModel: CreateRoomModel.room) {
+  execute (createSessionModel: CreateRoomModel) {
     if (!createSessionModel || !createSessionModel.name) { throw new ErrorBase('Request body invalid', ErrorTypes.Params, createSessionModel); }
 
     const roomName = createSessionModel.name.split(' ').join('_');
@@ -26,7 +26,7 @@ export class CreateRoomUsecase {
     return newRoom;
   }
 
-  private setSettingsRoom (room: IRoom, settings?: CreateRoomModel.Settings) {
+  private setSettingsRoom (room: IRoom, settings?: CreateSettingsModel) {
     if (!settings) {
       room.settingsRoom = {
         autoFlipCards: false,
