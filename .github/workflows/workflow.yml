@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Fetch in branch
       - uses: actions/checkout@v1
         
       - name: Login in Heroku
